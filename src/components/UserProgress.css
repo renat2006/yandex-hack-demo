@@ -1,17 +1,19 @@
 /* Основной контейнер */
 .user-progress {
-    background: rgba(20, 20, 30, 0.9);
+    background: rgba(30, 30, 40, 0.9);
     color: #fff;
     border-radius: 12px;
     padding: 20px;
-    max-width: 300px;
+    max-width: 600px;
     margin: 20px auto;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
     font-family: 'Inter', sans-serif;
 }
-
+*{
+    box-sizing: border-box;
+}
 /* Заголовок */
-.progress-header h2 {
+.progress-header h3 {
     font-size: 24px;
     margin-bottom: 10px;
 }
@@ -21,33 +23,61 @@
     color: #00ff88; /* Зеленый цвет для текущего уровня */
 }
 
-/* Вертикальный индикатор прогресса */
+/* Линия прогресса */
 .progress-bar-container {
     position: relative;
-    height: 300px;
-    width: 50px;
-    margin: 20px auto;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
+    height: 50px;
+    margin-top: 60px;
 }
 
-.progress-line {
+.progress-bar {
+    position: relative;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.progress-bar-fill {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
+    height: 100%;
+    top:0;
+    left: 0;
     background-color: #00ff88; /* Зеленый цвет заполнения */
-    border-radius: 25px;
+    border-radius: 10px;
 }
 
-/* Шаги прогресса */
-.progress-step {
-    position: absolute;
-    left: -80px; /* Отступ для меток уровней */
+/* Маркеры уровней */
+.progress-marker {
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+
 }
 
-.step-circle {
-    width: 20px;
-    height: 20px;
+.marker-circle {
+
+    width: 25px;
+    height: 25px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
+
+.marker-circle.achieved {
+    background-color: #00ff88; /* Зеленый цвет для достигнутых уровней */
+}
+
+.marker-label {
+    font-size: 11px;
+}
+.marker-container {
+    position: relative;
+
+    top: -60px; /* Расположение над линией прогресса */
+
+    display: flex;
+    justify-content: space-between;
+
 }

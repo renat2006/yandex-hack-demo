@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, title, task }) => {
+const Modal = ({ isOpen, onClose, onSuccess, title, task }) => {
     const [userAnswer, setUserAnswer] = useState('');
     const [isCorrect, setIsCorrect] = useState(null);
 
     const handleSubmit = () => {
         const isAnswerCorrect = task.checkAnswer(userAnswer.trim(), task.correctCode.trim());
         setIsCorrect(isAnswerCorrect);
+
+        if (isAnswerCorrect) {
+            onSuccess();
+        }
     };
+    useEffect(() => {
+        if (isCorrect) {
+            const timer = setTimeout(() => {
+                onClose();
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [isCorrect]);
+
 
     if (!isOpen) return null;
 

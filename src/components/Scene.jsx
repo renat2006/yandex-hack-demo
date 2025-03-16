@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import Planet from './Planet';
 import Modal from './Modal';
 import UserProgress from "./UserProgress.jsx";
+import {toast, ToastContainer} from "react-toastify";
 
 const fitCameraToObject = (camera, object, offset = 1.25) => {
     const boundingBox = new THREE.Box3().setFromObject(object);
@@ -121,32 +122,60 @@ const Scene = () => {
 
         setTargetPlanet(planet);
         setControlsEnabled(false);
+        setTimeout(()=>{isAnimating.current = false;}, 5000)
     };
-
+    const [progressVisible, setProgressVisible] = useState(false); // Состояние для отображения UserProgress
     const handleZoomComplete = () => {
         isAnimating.current = false; // Сброс флага анимации
         setIsModalOpen(true); // Открыть модальное окно
         animationTimeline.current.kill(); // Остановить анимацию после завершения
         animationTimeline.current = null; // Сбросить ссылку на анимацию
-    };
-    const [progress, setProgress] = useState(35); // Прогресс пользователя (в процентах)
 
+    };
+    const [xp, setXp] = useState(200);
     const levels = [
-        'Junior Developer',
-        'Middle Developer',
-        'Senior Developer',
-        'Tech Lead',
-        'Architect',
-        'CTO',
-        'Galactic IT Master',
+        { name: 'Рядовой HTML', requiredXp: 0 },
+        { name: 'Сержант CSS', requiredXp: 100 },
+        { name: 'Капитан JavaScript', requiredXp: 300 },
+        { name: 'Майор Frontend', requiredXp: 600 },
+        { name: 'Полковник Fullstack', requiredXp: 1000 },
+        { name: 'Генерал Архитектуры', requiredXp: 1500 },
     ];
 
-    const handleAddProgress = () => {
-        setProgress((prev) => Math.min(prev + 10, 100)); // Увеличение прогресса
+    const currentLevelIndex = levels.findIndex((level, index) =>
+        xp >= level.requiredXp &&
+        (index === levels.length - 1 || xp < levels[index + 1].requiredXp)
+    );
+
+    const currentLevel = levels[currentLevelIndex];
+    const nextLevel = levels[currentLevelIndex + 1];
+    const progress = nextLevel
+        ? ((xp - currentLevel.requiredXp) / (nextLevel.requiredXp - currentLevel.requiredXp)) * 100
+        : 100;
+
+    const handleSuccess = () => {
+        setXp(prev => prev + 150); // Начисляем 150 XP за решенную задачу
+        setIsModalOpen(false);
+        setControlsEnabled(true);
+
+        // Всплывающее уведомление
+        toast.success('🎉 Задача решена правильно! +150 XP', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+
+        });
+        setTimeout(()=> toggleProgressVisibility(), 5000);
     };
     const closeModal = () => {
         setIsModalOpen(false); // Закрыть модальное окно
         setControlsEnabled(true); // Включить управление камерой
+        setTargetPlanet(null);
     };
 
     const CameraAnimator = ({ targetPlanet }) => {
@@ -180,6 +209,9 @@ const Scene = () => {
         return <OrbitControls ref={controlsRef} enabled={controlsEnabled} />;
     };
 
+    const toggleProgressVisibility = () => {
+        setProgressVisible((prev) => !prev); // Переключение состояния отображения UserProgress
+    };
     return (
         <>
             <Canvas camera={{position: [0, 5, 10], fov: 50}} style={{backgroundColor: 'black'}}>
@@ -202,32 +234,31 @@ const Scene = () => {
 
                 <CameraAnimator targetPlanet={targetPlanet}/>
             </Canvas>
-            <div style={{textAlign: 'center', paddingTop: '50px'}}>
-                <UserProgress progress={progress} levels={levels}/>
-                <button
-                    onClick={handleAddProgress}
-                    style={{
-                        marginTop: '20px',
-                        padding: '10px 20px',
-                        fontSize: '16px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: '#00ff00',
-                        color: '#000',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Добавить прогресс
-                </button>
+            {progressVisible && (
+            <div style={{position: "absolute", width: "100%", textAlign: 'center', top: '10px'}}>
+                <UserProgress xp={xp} progress={progress} levels={levels} lockCondition="Пройдите специализацию по Backend!"/>
+
+            </div>
+                )}
+            <div
+                className="avatar"
+                onClick={toggleProgressVisibility}
+            >
+                <img
+                    src="https://steamuserimages-a.akamaihd.net/ugc/2490003003201333678/8F987FC4732FE047142C5A590A943CD60D187AD9/?imw=512&imh=288&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+                    alt="Avatar"
+                />
             </div>
             {targetPlanet && (
                 <Modal
                     isOpen={isModalOpen}
                     onClose={closeModal}
+                    onSuccess={handleSuccess}
                     title={`Задача на планете ${targetPlanet.name}`}
                     task={targetPlanet.dailyTask}
                 />
             )}
+            <ToastContainer />
         </>
     );
 };
