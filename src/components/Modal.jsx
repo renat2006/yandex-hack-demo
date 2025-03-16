@@ -41,14 +41,14 @@ const Modal = ({ isOpen, onClose, onSuccess, title, task }) => {
                 <div className="modal-content">
                     <p className="modal-question">{task.question}</p>
 
-                    {/* Рендеринг начального кода с подсветкой */}
+
                     <div className="code-block">
                         <SyntaxHighlighter language="javascript" style={materialDark}>
                             {task.initialCode}
                         </SyntaxHighlighter>
                     </div>
 
-                    {/* Редактор кода */}
+
                     <CodeMirror
                         value={userAnswer}
                         height="200px"
@@ -58,12 +58,12 @@ const Modal = ({ isOpen, onClose, onSuccess, title, task }) => {
                         placeholder="Введите ваш код здесь..."
                     />
 
-                    {/* Кнопка проверки */}
+
                     <button onClick={handleSubmit} className="modal-action-btn">
                         Проверить
                     </button>
 
-                    {/* Результат проверки */}
+
                     {isCorrect !== null && (
                         <p className="result-message" style={{ color: isCorrect ? 'green' : 'red' }}>
                             {isCorrect ? 'Ответ правильный!' : 'Ответ неправильный.'}

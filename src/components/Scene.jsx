@@ -111,25 +111,25 @@ const Scene = () => {
     const [controlsEnabled, setControlsEnabled] = useState(true);
     const animationTimeline = useRef(null);
 
-// Флаг для предотвращения повторной анимации
+
     const isAnimating = useRef(false);
 
     const animateCameraToPlanet = (planet) => {
-        if (isAnimating.current || isModalOpen) return; // Предотвращение повторной анимации
+        if (isAnimating.current || isModalOpen) return;
         isAnimating.current = true;
 
-        if (animationTimeline.current) animationTimeline.current.kill(); // Остановить предыдущую анимацию
+        if (animationTimeline.current) animationTimeline.current.kill();
 
         setTargetPlanet(planet);
         setControlsEnabled(false);
         setTimeout(()=>{isAnimating.current = false;}, 5000)
     };
-    const [progressVisible, setProgressVisible] = useState(false); // Состояние для отображения UserProgress
+    const [progressVisible, setProgressVisible] = useState(false);
     const handleZoomComplete = () => {
-        isAnimating.current = false; // Сброс флага анимации
-        setIsModalOpen(true); // Открыть модальное окно
-        animationTimeline.current.kill(); // Остановить анимацию после завершения
-        animationTimeline.current = null; // Сбросить ссылку на анимацию
+        isAnimating.current = false;
+        setIsModalOpen(true);
+        animationTimeline.current.kill();
+        animationTimeline.current = null;
 
     };
     const [xp, setXp] = useState(200);
@@ -154,11 +154,11 @@ const Scene = () => {
         : 100;
 
     const handleSuccess = () => {
-        setXp(prev => prev + 150); // Начисляем 150 XP за решенную задачу
+        setXp(prev => prev + 150);
         setIsModalOpen(false);
         setControlsEnabled(true);
 
-        // Всплывающее уведомление
+
         toast.success('🎉 Задача решена правильно! +150 XP', {
             position: "top-center",
             autoClose: 5000,
@@ -173,8 +173,8 @@ const Scene = () => {
         setTimeout(()=> toggleProgressVisibility(), 5000);
     };
     const closeModal = () => {
-        setIsModalOpen(false); // Закрыть модальное окно
-        setControlsEnabled(true); // Включить управление камерой
+        setIsModalOpen(false);
+        setControlsEnabled(true);
         setTargetPlanet(null);
     };
 
@@ -210,7 +210,7 @@ const Scene = () => {
     };
 
     const toggleProgressVisibility = () => {
-        setProgressVisible((prev) => !prev); // Переключение состояния отображения UserProgress
+        setProgressVisible((prev) => !prev);
     };
     return (
         <>
