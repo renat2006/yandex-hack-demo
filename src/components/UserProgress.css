@@ -1,0 +1,53 @@
+/* Основной контейнер */
+.user-progress {
+    background: rgba(20, 20, 30, 0.9);
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 300px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Заголовок */
+.progress-header h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.progress-header .current-level {
+    font-weight: bold;
+    color: #00ff88; /* Зеленый цвет для текущего уровня */
+}
+
+/* Вертикальный индикатор прогресса */
+.progress-bar-container {
+    position: relative;
+    height: 300px;
+    width: 50px;
+    margin: 20px auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+}
+
+.progress-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    background-color: #00ff88; /* Зеленый цвет заполнения */
+    border-radius: 25px;
+}
+
+/* Шаги прогресса */
+.progress-step {
+    position: absolute;
+    left: -80px; /* Отступ для меток уровней */
+}
+
+.step-circle {
+    width: 20px;
+    height: 20px;
+}
