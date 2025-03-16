@@ -7,6 +7,7 @@ import Planet from './Planet';
 import Modal from './Modal';
 import UserProgress from "./UserProgress.jsx";
 import {toast, ToastContainer} from "react-toastify";
+import {Tooltip} from "react-tippy";
 
 const fitCameraToObject = (camera, object, offset = 1.25) => {
     const boundingBox = new THREE.Box3().setFromObject(object);
@@ -240,15 +241,24 @@ const Scene = () => {
 
             </div>
                 )}
+
             <div
                 className="avatar"
                 onClick={toggleProgressVisibility}
+            ><Tooltip
+                title="Прогресс"
+                position="bottom"
+                trigger="mouseenter"
+                arrow={true}
+                interactive={true}
             >
                 <img
-                    src="https://steamuserimages-a.akamaihd.net/ugc/2490003003201333678/8F987FC4732FE047142C5A590A943CD60D187AD9/?imw=512&imh=288&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true"
+                    src="https://259506.selcdn.ru/sites-static/site535287/9d562ae2-1124-465b-b181-57561671cc69/9d562ae2-1124-465b-b181-57561671cc69-3637879.png"
                     alt="Avatar"
                 />
+            </Tooltip>
             </div>
+
             {targetPlanet && (
                 <Modal
                     isOpen={isModalOpen}
